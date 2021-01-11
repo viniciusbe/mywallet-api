@@ -2,8 +2,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
   ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -20,11 +21,15 @@ class Transaction {
   @Column()
   type: 'income' | 'outcome';
 
-  @Column()
+  @Column('decimal')
   value: number;
 
+  @Column()
+  category_id: string;
+
   @ManyToOne(() => Category)
-  category_id: Category;
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   @CreateDateColumn()
   created_at: Date;
