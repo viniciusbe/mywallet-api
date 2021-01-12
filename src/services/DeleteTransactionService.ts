@@ -4,25 +4,19 @@ import AppError from '../errors/AppError';
 import Transaction from '../models/Transaction';
 
 class DeleteTransactionService {
-  public async execute(id: string): Promise<Transaction> {
+  public async execute(id: string): Promise<void> {
     const transactionRepository = getRepository(Transaction);
 
     if (!validator.isUUID(id)) {
       throw new AppError('Id is not a valid UUID');
     }
-    const findTransaction = await transactionRepository.findOne({
-      where: { id },
-    });
+    const transaction = await transactionRepository.findOne(id);
 
-    if (!findTransaction) {
+    if (!transaction) {
       throw new AppError('Id does not match any existing transaction');
     }
 
-    const deletedTransaction = await transactionRepository.remove(
-      findTransaction,
-    );
-
-    return deletedTransaction;
+    await transactionRepository.remove(transaction);
   }
 }
 

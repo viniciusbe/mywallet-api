@@ -36,21 +36,21 @@ class CreateTransactionService {
       throw new AppError("Transaction's type should be income or outcome");
     }
 
-    let findCategory = await categoryRepository.findOne({
+    let transactionCategory = await categoryRepository.findOne({
       where: { title: category },
     });
 
-    if (!findCategory) {
-      findCategory = categoryRepository.create({ title: category });
+    if (!transactionCategory) {
+      transactionCategory = categoryRepository.create({ title: category });
 
-      await categoryRepository.save(findCategory);
+      await categoryRepository.save(transactionCategory);
     }
 
     const transaction = transactionRepository.create({
       title,
       value,
       type,
-      category: findCategory,
+      category: transactionCategory,
     });
 
     await transactionRepository.save(transaction);
