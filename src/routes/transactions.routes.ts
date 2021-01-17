@@ -20,12 +20,6 @@ transactionsRouter.get('/', async (request, response) => {
     relations: ['category'],
   });
 
-  transactions.forEach(transaction => {
-    // @ts-expect-error
-    // eslint-disable-next-line no-param-reassign
-    delete transaction.category_id;
-  });
-
   return response.json({ transactions, balance });
 });
 
